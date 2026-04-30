@@ -95,9 +95,10 @@ public class JsonAdapter implements Serializable {
             if (response.getStatus() == 200) {
                 return new LlmInteraction(this.texteRequeteJson, texteReponseJson, extractReponse(texteReponseJson));
             } else {
-                // Pour voir la requête JSON s'il y a eu un problème.
+                // Ajout du corps de la réponse dans l'exception pour affichage détaillé
+                String messageErreur = response.getStatus() + " : " + response.getStatusInfo() + "\n" + texteReponseJson;
                 JsonObject objet = Json.createReader(new StringReader(requestBody)).readObject();
-                throw new RequeteException(response.getStatus() + " : " + response.getStatusInfo(), prettyPrinting(objet));
+                throw new RequeteException(messageErreur, prettyPrinting(objet));
             }
         }
     }
