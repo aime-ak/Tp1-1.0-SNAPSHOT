@@ -7,11 +7,11 @@ import jakarta.ws.rs.core.Response;
 import java.io.Serializable;
 
 @Dependent
-public class LlmClientPourGemini implements Serializable {
+public class LlmClient implements Serializable {
     private final String apiKey;
     private final Client client;
 
-    public LlmClientPourGemini() {
+    public LlmClient() {
         this.apiKey = System.getenv("GEMINI_KEY");
         if (this.apiKey == null || this.apiKey.isEmpty()) {
             throw new IllegalStateException("La clé GEMINI_KEY n'est pas définie dans les variables d'environnement. Veuillez la définir avant de lancer l'application.");

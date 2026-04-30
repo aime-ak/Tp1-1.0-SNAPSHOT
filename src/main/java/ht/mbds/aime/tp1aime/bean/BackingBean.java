@@ -10,6 +10,7 @@ import jakarta.inject.Named;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 // Ajout pour debug et LLM
@@ -155,6 +156,7 @@ public class BackingBean implements Serializable {
             facesContext.addMessage(null, message);
             return null;
         }
+
         try {
             if (this.conversation.isEmpty()) {
                 // Envoyer le rôle système au début de la conversation
@@ -167,7 +169,7 @@ public class BackingBean implements Serializable {
         } catch (Exception e) {
             FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR,
                     "Problème de connexion avec l'API du LLM",
-                    "Problème de connexion avec l'API du LLM" + e.getMessage());
+                    "Problème de connexion avec l'API du LLM" + e.getMessage() + "\n" + Arrays.toString(e.getStackTrace()));
             facesContext.addMessage(null, message);
         }
         // La conversation contient l'historique des questions-réponses depuis le début.
