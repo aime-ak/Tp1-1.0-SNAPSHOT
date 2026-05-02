@@ -158,19 +158,28 @@ public class BackingBean implements Serializable {
         }
 
         try {
-            if (this.conversation.isEmpty()) {
-                // Envoyer le rôle système au début de la conversation
-                // (voir code du TP0)
+            String requeteAEnvoyer = question;
+            if (this.conversation.isEmpty() && roleSysteme != null && !roleSysteme.isBlank()) {
+                // Préfixer la question avec le rôle système pour la première requête
+                requeteAEnvoyer = roleSysteme + "\n" + question;
             }
-            var interaction = jsonAdapter.envoyerRequete(question);
+            var interaction = jsonAdapter.envoyerRequete(requeteAEnvoyer);
             this.reponse = interaction.reponseExtraite();
             this.texteRequeteJson = interaction.questionJson();
             this.texteReponseJson = interaction.reponseJson();
         } catch (Exception e) {
-            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR,
-                    "Problème de connexion avec l'API du LLM",
-                    "Problème de connexion avec l'API du LLM" + e.getMessage() + "\n" + Arrays.toString(e.getStackTrace()));
-            facesContext.addMessage(null, message);
+            String msg = e.getMessage();
+            if (msg != null && msg.contains("503")) {
+                FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR,
+                        "Service temporairement indisponible",
+                        "Le service d'IA est temporairement surchargé ou en maintenance. Veuillez réessayer dans quelques minutes.");
+                facesContext.addMessage(null, message);
+            } else {
+                FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR,
+                        "Problème de connexion avec l'API du LLM",
+                        "Problème de connexion avec l'API du LLM" + e.getMessage() + "\n" + Arrays.toString(e.getStackTrace()));
+                facesContext.addMessage(null, message);
+            }
         }
         // La conversation contient l'historique des questions-réponses depuis le début.
         afficherConversation();
