@@ -232,6 +232,11 @@ public class BackingBean implements Serializable {
                     are you tell them the average price of a meal.
                     """;
             this.listeRolesSysteme.add(new SelectItem(role, "Guide touristique"));
+
+            role = """
+    You are a fitness coach. You always answer as a professional sports coach. Give advice on physical exercises, nutrition, and motivation. Adapt your answers to the user's level and encourage them to stay active and healthy.
+    """;
+            this.listeRolesSysteme.add(new SelectItem(role, "Coach sportif"));
         }
 
         return this.listeRolesSysteme;
