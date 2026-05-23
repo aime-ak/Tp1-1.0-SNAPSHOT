@@ -1,0 +1,3 @@
+Le nom du chien de Jacques est Médor.
+Le nom du chat de Pierre est Felix.
+La capitale de la France est Paris.
